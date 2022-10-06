@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using API_Folhas.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API_Folhas.Controllers
 {
@@ -88,9 +89,30 @@ namespace API_Folhas.Controllers
             _context.Folhas.Add(folha);
             _context.SaveChanges();
             return Created("", folha);
+
             }
 
             
         }
+
+        [HttpGet]
+        [Route("listar")]
+        public IActionResult Listar()
+        {
+            var folhas = _context.Folhas.Include(p => p.Funcionario).ToList();
+
+            if(folhas == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(folhas);
+
+            }
+        }
     }
+
+        
 }
+
