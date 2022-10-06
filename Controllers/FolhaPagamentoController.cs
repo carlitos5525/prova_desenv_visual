@@ -154,7 +154,7 @@ namespace API_Folhas.Controllers
         [HttpGet]
         public IActionResult Filtrar([FromRoute] int mes, int ano)
         {
-            var folhas = _context.Folhas.Where(f => f.Mes == mes && f.Ano == ano).ToList();
+            var folhas = _context.Folhas.Include(p => p.Funcionario).Where(f => f.Mes == mes && f.Ano == ano).ToList();
 
             if(folhas == null)
             {
