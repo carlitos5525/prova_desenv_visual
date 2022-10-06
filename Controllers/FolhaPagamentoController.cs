@@ -150,6 +150,25 @@ namespace API_Folhas.Controllers
         }
 
 
+        [Route("filtrar/{mes}/{ano}")]
+        [HttpGet]
+        public IActionResult Filtrar([FromRoute] int mes, int ano)
+        {
+            var folhas = _context.Folhas.Where(f => f.Mes == mes && f.Ano == ano).ToList();
+
+            if(folhas == null)
+            {
+                return NotFound();
+            }
+
+            else
+            {
+                return Ok(folhas);
+            }
+            
+        }
+
+
 
     }
 }
