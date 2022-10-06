@@ -111,8 +111,46 @@ namespace API_Folhas.Controllers
 
             }
         }
-    }
 
-        
+        [Route("buscar/{cpf}/{mes}/{ano}")]
+        [HttpGet]
+        public IActionResult Buscar([FromRoute] string cpf, int mes, int ano)
+        {
+            //Expressão lambda
+            Funcionario funcionario =
+                _context.Funcionarios.FirstOrDefault
+            (
+                f => f.Cpf.Equals(cpf)
+            );
+            
+            if (funcionario == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var folhas_funcionario = _context.Folhas.Where(f => f.FuncionarioId == funcionario.FuncionarioId).ToList();
+
+                FolhaPagamento folha = folhas_funcionario.FirstOrDefault
+                (
+                    f => f.Mes.Equals(mes) && f.Ano.Equals(ano)
+                );
+
+                if(folha == null)
+                {
+                    return NotFound();
+                }
+
+                else
+                {
+                    return Ok(folha);
+                }
+            }
+            
+        }
+
+
+
+    }
 }
 
